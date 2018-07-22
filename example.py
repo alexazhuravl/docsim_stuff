@@ -92,7 +92,10 @@ if __name__ == '__main__':
     stop_words = set(stopwords.words('english'))
     df_innitie = pd.read_csv('/home/az/Documents/work/document-similarity/data/innitie_cataloge_20180706.csv')
     level2 = df_innitie['level2'].unique().tolist()
+    print(level2)
+    #level3 = df_innitie['level3'].unique().tolist()
     level2_innitie = [x.lower() for x in level2 if isinstance(x, str) and len(x) >= 2]
+    #level3_innitie = [x.lower() for x in level3 if isinstance(x, str) and len(x) >= 2]
     df_unf = pd.read_excel('/home/az/Documents/work/document-similarity/data/unforgetable.xlsx')
     data_unf = df_unf['Subcategory'].unique().tolist()
     data_unf = [x.lower() for x in data_unf if isinstance(x, str) and len(x) >= 2]
@@ -100,13 +103,23 @@ if __name__ == '__main__':
 
     tokens1 = [nlp(x) for x in level2_innitie]
     tokens2 = [nlp(x) for x in data_unf]
+    #tokens3 = [nlp(x) for x in level3_innitie]
+    #
+    # for t in tokens1:
+    #     for x in tokens2:
+    #         data = [t.text, x.text, str(t.similarity(x))]
+    #
 
-    for t in tokens1:
-        for x in tokens2:
-            data = [t.text, x.text, str(t.similarity(x))]
-
-
-
+    # arr = []
+    # for t in tokens3:
+    #     for x in tokens2:
+    #         outer = t.text
+    #         innitie = x.text
+    #         score = t.similarity(x)
+    #     data = {'a': outer, 'b': innitie, 'c': score}
+    #     arr += data
+    # data_test = pd.DataFrame(data = arr)
+    # print(data_test)
 
 
     """
