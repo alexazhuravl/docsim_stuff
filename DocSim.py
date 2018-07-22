@@ -43,10 +43,10 @@ class DocSim(object):
             target_vec = self.vectorize(doc)
             sim_score = self._cosine_sim(source_vec, target_vec)
             if sim_score > threshold:
-                results+=[
+                results += [
                     sim_score
-                    #'doc': doc
+                    # 'doc': doc
                 ]
             # Sort results by score in desc order
-            #results.sort(key=lambda k: k['score'], reverse=True)
+            # results.sort(key=lambda k: k['score'], reverse=True)
         return results
