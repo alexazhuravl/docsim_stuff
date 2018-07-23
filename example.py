@@ -92,10 +92,9 @@ if __name__ == '__main__':
     stop_words = set(stopwords.words('english'))
     df_innitie = pd.read_csv('/home/az/Documents/work/document-similarity/data/innitie_cataloge_20180706.csv')
     level2 = df_innitie['level2'].unique().tolist()
-    print(level2)
-    #level3 = df_innitie['level3'].unique().tolist()
+    level3 = df_innitie['level3 names'].unique().tolist()
     level2_innitie = [x.lower() for x in level2 if isinstance(x, str) and len(x) >= 2]
-    #level3_innitie = [x.lower() for x in level3 if isinstance(x, str) and len(x) >= 2]
+    level3_innitie = [x.lower() for x in level3 if isinstance(x, str) and len(x) >= 2]
     df_unf = pd.read_excel('/home/az/Documents/work/document-similarity/data/unforgetable.xlsx')
     data_unf = df_unf['Subcategory'].unique().tolist()
     data_unf = [x.lower() for x in data_unf if isinstance(x, str) and len(x) >= 2]
@@ -103,23 +102,34 @@ if __name__ == '__main__':
 
     tokens1 = [nlp(x) for x in level2_innitie]
     tokens2 = [nlp(x) for x in data_unf]
-    #tokens3 = [nlp(x) for x in level3_innitie]
-    #
-    # for t in tokens1:
-    #     for x in tokens2:
-    #         data = [t.text, x.text, str(t.similarity(x))]
-    #
+    tokens3 = [nlp(x) for x in level3_innitie]
+    from operator import itemgetter
 
-    # arr = []
-    # for t in tokens3:
-    #     for x in tokens2:
-    #         outer = t.text
-    #         innitie = x.text
-    #         score = t.similarity(x)
-    #     data = {'a': outer, 'b': innitie, 'c': score}
-    #     arr += data
-    # data_test = pd.DataFrame(data = arr)
-    # print(data_test)
+    arr_1 = []
+    for t in tokens1:
+        for x in tokens2:
+            innitie = t.text
+            outer = x.text
+            score = t.similarity(x)
+            data = {'unforgettable': outer, 'innitie_level2': innitie,  'score': score}
+            arr_1 += [data]
+
+    df_test_1 = pd.DataFrame(arr_1)
+    df_sorted = df_test_1.sort_values(by=['score'], ascending=False)
+    df_sorted.to_csv('score_results_level2.csv', sep=",", quotechar='"', index=False, quoting=csv.QUOTE_ALL)
+
+
+    arr = []
+    for t in tokens3:
+        for x in tokens2:
+            innitie = t.text
+            outer= x.text
+            score = t.similarity(x)
+            data = {'unforgettable': outer, 'innitie_level3': innitie, 'score': score}
+            arr += [data]
+    df_test = pd.DataFrame(arr)
+    df_sorted_2 = df_test.sort_values(by=['score'], ascending=False)
+    df_sorted_2.to_csv('score_results_level3.csv', sep=",", quotechar='"', index=False, quoting=csv.QUOTE_ALL)
 
 
     """
